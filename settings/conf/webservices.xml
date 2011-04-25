@@ -1,0 +1,10 @@
+<wsserver>
+	<port>8282</port>
+	<webservices>
+		<webservice>
+			<route>/align</route>
+			<pipelineconfig>alignment.pipeline</pipelineconfig>
+			<pipelinetype>bitext</pipelinetype>
+		</webservice>
+	</webservices>
+</wsserver>

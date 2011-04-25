@@ -1,0 +1,61 @@
+<pipeline>
+	<extract>
+		<class>com.mltech.laf.extractor.RosettaExtractor</class>
+	</extract>
+	<elements>
+		<element>
+			<class>com.mltech.laf.processing.SimpleSegmentSplitter</class>
+			<options>
+				<option name="separators">,.;:!?\n</option>
+			</options>
+		</element>
+		<element>
+			<class>com.mltech.laf.processing.SimpleTokenizer</class>
+			<options>
+				<option name="punctuation">,.;:!?</option>
+			</options>
+		</element>
+		<element>
+			<class>com.mltech.laf.processing.Normalizer</class>
+		</element>
+		<element>
+			<class>com.mltech.laf.processing.DocumentSwapper</class>
+		</element>
+		<element>
+			<class>com.mltech.laf.processing.SimpleSegmentSplitter</class>
+			<options>
+				<option name="separators">。、，：；\n</option>
+			</options>
+		</element>
+		<element>
+			<class>com.mltech.laf.processing.CHI.Tokenizer</class>
+		</element>
+		<element>
+			<class>com.mltech.laf.processing.Normalizer</class>
+		</element>
+		<element>
+			<class>com.mltech.segmentaligner.champollion.Aligner</class>
+			<options>
+				<option name="usedict">yes</option>
+				<option name="dictpath">/opt/projects/mlt_smt_package/mlt-language/res/mlt/dict/CHI/champollion-ENG-CHI.dic</option>
+				<option name="stoplistpath">E.stoplist</option>
+				<!--				<option name="mwu_maxlen_x">1</option>-->
+				<!--				<option name="mwu_maxlen_y">1</option>-->
+				<option name="xtoyc">0.634</option>
+				<option name="penalty01">0.8</option>
+				<option name="penalty21">0.95</option>
+				<option name="penalty12">0.95</option>
+				<option name="penalty22">0.85</option>
+				<option name="penalty31">0.94</option>
+				<option name="penalty13">0.94</option>
+				<option name="penalty32">0.84</option>
+				<option name="penalty23">0.84</option>
+				<option name="penalty41">0.92</option>
+				<option name="penalty14">0.92</option>
+			</options>
+		</element>
+	</elements>
+	<export>
+		<class>com.mltech.segmentaligner.export.XMLAlignmentExporter</class>
+	</export>
+</pipeline>

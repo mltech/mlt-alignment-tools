@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     Dec 19, 2010 9:03:10 AM                                                        
+
+     mlt-aligner    
+     Generic segment aligner
+                   
+     sdruon                                                                
+     ====================================================================== -->
+<project name="mlt" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<description>Alignment and Translation environment</description>
+
+	<ivy:settings file="../settings/ivysettings.xml" />
+
+	<property name="ivy.lib.dir" value="${java.io.tmpdir}/lib"/>
+	
+	<target name="build" depends="init, resolve, compile, jar, ivy-publish-local, delete" />
+
+	<target name="init">
+		<mkdir dir="${ivy.lib.dir}" />
+	</target>
+	
+	<target name="resolve" description="--> retrieve dependencies with ivy">
+		<ivy:retrieve />
+		<path id="class.path">
+			<fileset dir="${ivy.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="ext" >
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<property name="classpath" refid="class.path" />
+		<mkdir dir="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/classes" />
+	</target>
+
+	<target name="compile">
+		<javac classpath="${classpath}" srcdir="src/main" destdir="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/classes" includeantruntime="false" />
+	</target>
+
+	<target name="jar">
+		<jar destfile="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/${ivy.module}-${ivy.revision}.jar" basedir="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/classes" />
+	</target>
+
+	<target name="ivy-publish-local">
+		<ivy:publish resolver="local-repo" forcedeliver="true" overwrite="true" publishivy="false">
+			<artifacts pattern="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/${ivy.module}-${ivy.revision}.jar" />
+		</ivy:publish>
+	</target>
+	
+	<target name="delete">
+		<delete dir="${ivy.lib.dir}"/>
+		<delete dir="${java.io.tmpdir}/ivy_tmp"/>
+	</target>
+</project>

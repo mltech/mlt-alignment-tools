@@ -1,0 +1,15 @@
+[submodule "mlt-language"]
+	path = mlt-language
+	url = git@github.com:mltech/mlt-language.git
+[submodule "mlt-laf"]
+	path = mlt-laf
+	url = git@github.com:mltech/mlt-laf.git
+[submodule "mlt-aligner"]
+	path = mlt-aligner
+	url = git@github.com:mltech/mlt-aligner.git
+[submodule "mlt-lib"]
+	path = mlt-lib
+	url = git@github.com:mltech/mlt-lib.git
+[submodule "mlt-plugins"]
+	path = mlt-plugins
+	url = git@github.com:mltech/mlt-plugins.git

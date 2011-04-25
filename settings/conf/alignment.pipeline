@@ -1,0 +1,69 @@
+<pipeline>
+  <extract>
+    <class>com.mltech.laf.extractor.RosettaExtractor</class>
+  </extract>
+  <parsers>
+    <parser>
+      <class>com.mltech.laf.processing.SimpleSegmentSplitter</class>
+      <options>
+        <option name="separators">,.;:!?\n</option>
+      </options>
+    </parser>
+    <parser>
+      <class>com.mltech.laf.processing.SimpleTokenizer</class>
+      <options>
+        <option name="punctuation">,.;:!?</option>
+      </options>
+    </parser>
+    <parser>
+      <class>com.mltech.laf.processing.Normalizer</class>
+    </parser>
+    <parser>
+      <class>com.mltech.laf.processing.DocumentSwapper</class>
+    </parser>
+    <parser>
+      <class>com.mltech.laf.processing.SimpleSegmentSplitter</class>
+      <options>
+        <option name="separators">。、，：；\n</option>
+      </options>
+    </parser>
+    <parser>
+      <class>com.mltech.laf.processing.CHI.Tokenizer</class>
+    </parser>
+    <parser>
+      <class>com.mltech.laf.processing.Normalizer</class>com.mltech.laf. </parser>
+    <parser>
+      <class>com.mltech.segmentaligner.champollion.Aligner</class>
+      <options>
+        <option name="usedict">yes</option>
+        <option name="dictpath">com/mltech/laf/resources/dict/CHI/champollion-ENG-CHI.dic</option>
+        <option name="stoplistpath">E.stoplist</option>
+        <!--				<option name="mwu_maxlen_x">1</option>-->
+        <!--				<option name="mwu_maxlen_y">1</option>-->
+        <option name="xtoyc">0.634</option>
+        <option name="penalty01">0.8</option>
+        <option name="penalty21">0.95</option>
+        <option name="penalty12">0.95</option>
+        <option name="penalty22">0.85</option>
+        <option name="penalty31">0.94</option>
+        <option name="penalty13">0.94</option>
+        <option name="penalty32">0.84</option>
+        <option name="penalty23">0.84</option>
+        <option name="penalty41">0.92</option>
+        <option name="penalty14">0.92</option>
+        <option name="scoringmethod">wamean</option>
+      </options>
+    </parser>
+  </parsers>
+  <filters>
+    <filter>
+      <class>com.mltech.segmentaligner.filter.AlignmentFilter</class>
+      <options>
+        <option name="threshold">1</option>
+      </options>
+    </filter>
+  </filters>
+  <export>
+    <class>com.mltech.segmentaligner.export.XMLAlignmentExporter</class>
+  </export>
+</pipeline>

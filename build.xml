@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     Dec 19, 2010 9:03:10 AM                                                        
+
+     mlt-aligner    
+     Generic segment aligner
+                   
+     sdruon                                                                
+     ====================================================================== -->
+<project name="mlt" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<description>Alignment and Translation environment</description>
+
+	<ivy:settings file="settings/ivysettings.xml" />
+
+	<property name="ivy.lib.dir" value="${java.io.tmpdir}/lib" />
+
+	<target name="build" depends="compile, resolve, copy, zip, delete" />
+
+	<target name="resolve" description="--> retrieve dependencies with ivy">
+		<ivy:retrieve />
+		<path id="class.path">
+			<fileset dir="${ivy.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<property name="classpath" refid="class.path" />
+		<mkdir dir="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}" />
+	</target>
+
+	<target name="compile">
+		<delete dir="~/.ivy2/cache/mlt" />
+		<!-- <ivy:cleancache /> -->
+		<ant antfile="build.xml" dir="mlt-lib" />
+		<ant antfile="build.xml" dir="mlt-laf" />
+		<ant antfile="build.xml" dir="mlt-language" />
+		<ant antfile="build.xml" dir="mlt-aligner" />
+		<ant antfile="build.xml" dir="mlt-plugins" />
+	</target>
+
+	<target name="copy">
+		<copy todir="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/lib">
+			<fileset dir="${ivy.lib.dir}" />
+			<fileset dir="mlt-language/ext" />
+		</copy>
+		<copy todir="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/res">
+			<fileset dir="mlt-language/res" />
+		</copy>
+		<copy todir="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/conf">
+			<fileset dir="settings/conf" />
+		</copy>
+		<copy todir="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/ext">
+			<fileset dir="mlt-aligner/ext" />
+		</copy>
+		<copy file="settings/mlt-alignment-ws.sh" tofile="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/mlt-alignment-ws.sh" />
+		<chmod file="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/mlt-alignment-ws.sh" perm="777" />
+		<copy file="settings/align.sh" tofile="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/align.sh" />
+		<chmod file="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/align.sh" perm="777" />
+		<copy file="settings/rosetta_align.sh" tofile="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/rosetta_align.sh" />
+		<chmod file="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}/rosetta_align.sh" perm="777" />
+	</target>
+
+	<target name="zip">
+		<!-- <delete file="${java.io.tmpdir}/${ivy.module}-${ivy.revision}.zip" /> -->
+		<delete file="${java.io.tmpdir}/${ivy.module}-${ivy.revision}.tar.gz" />
+		<!-- <zip destfile="${java.io.tmpdir}/${ivy.module}-${ivy.revision}.zip" basedir="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}" update="true" /> -->
+		<tar destfile="${java.io.tmpdir}/${ivy.module}-${ivy.revision}.tar" basedir="${java.io.tmpdir}/ivy_tmp/${ivy.module}-${ivy.revision}" />
+		<gzip destfile="${java.io.tmpdir}/${ivy.module}-${ivy.revision}.tar.gz" src="${java.io.tmpdir}/${ivy.module}-${ivy.revision}.tar" />
+	</target>
+
+	<target name="delete">
+		<delete dir="${java.io.tmpdir}/ivy_tmp" />
+	</target>
+</project>
